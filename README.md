@@ -12,12 +12,19 @@ Start up dev server
 yarn start
 ```
 
+Start up a Express server to test things like real-world server conditions or
+server-side rendering.
+
+```sh
+yarn start:server
+```
+
 ---
 
 Build a production package
 
 ```sh
-yarn build
+yarn compile
 # start up a simple server to verify the built code
-yarn start:build
+yarn start:static
 ```
