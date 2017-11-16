@@ -29,26 +29,25 @@ function getServedPath(appPackageJson) {
 
 module.exports = {
   paths: {
-    appBuild: path.resolve(ROOT, 'build'),
-    appHtml: path.resolve(ROOT, 'public/index.html'),
+    appHtml: path.resolve(ROOT, 'src/assets/index.html'),
     appIndexJs: path.resolve(ROOT, 'src/index.js'),
     appNodeModules: path.resolve(ROOT, 'node_modules'),
     appPackageJson: path.resolve(ROOT, 'package.json'),
-    appPublic: path.resolve(ROOT, 'public'),
+    ASSETS: path.resolve(ROOT, 'src/assets'),
     JEST: path.resolve(ROOT, '.jest'),
+    PUBLIC: path.resolve(ROOT, 'public'),
     publicUrl: getPublicUrl(path.resolve(ROOT, 'package.json')),
     ROOT,
     SRC,
     servedPath: getServedPath(path.resolve(ROOT, 'package.json')),
-    testsSetup: path.resolve(ROOT, 'src/setupTests.js'),
     yarnLockFile: path.resolve(ROOT, 'yarn.lock'),
   },
+  PORT: 3001,
   webpack: {
     paths: {
       COMPONENTS: path.resolve(ROOT, 'src/components'),
       ROOT,
       SRC,
-    },
-    port: 3001
+    }
   }
 };

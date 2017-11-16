@@ -94,7 +94,7 @@ const conf = {
   output: {
     // The build folder.
     // Not used in dev but WebpackDevServer crashes without it:
-    path: appConfig.paths.appBuild,
+    path: appConfig.paths.PUBLIC,
     // Set via the `homepage` prop in package.json or via the `PUBLIC_URL` CLI
     // environment variable.
     publicPath: publicPath,
