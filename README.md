@@ -12,7 +12,7 @@ Start up dev server
 yarn start
 ```
 
-Start up a Express server to test things like real-world server conditions or
+Start up an Express server to test things like real-world server conditions or
 server-side rendering.
 
 ```sh
