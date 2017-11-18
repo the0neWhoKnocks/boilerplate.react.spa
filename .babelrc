@@ -1,0 +1,30 @@
+{
+  "env": {
+    "development": {
+      "presets": [
+        "react-app"
+      ]
+    },
+    "production": {
+      "presets": [
+        "react-app"
+      ]
+    },
+    "server": {
+      "plugins": [
+        "transform-object-rest-spread",
+        "transform-react-jsx",
+        ["webpack-alias", {
+          "config": "./conf.webpack.js"
+        }]
+      ],
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "current"
+          }
+        }]
+      ]
+    }
+  }
+}

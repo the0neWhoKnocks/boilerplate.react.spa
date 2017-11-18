@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import './styles';
+import styles from './styles';
 
 class Main extends Component {
   render() {
     return (
-      <main>
+      <main { ...styles }>
         <Switch>
           {this.props.routes.map((route, ndx) => {
             const View = route.view;

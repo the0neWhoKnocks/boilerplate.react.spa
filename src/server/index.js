@@ -1,14 +1,13 @@
-const express = require('express');
-const compression = require('compression');
-const color = require('cli-color');
-const browserSync = require('browser-sync');
-const opn = require('opn');
-const portscanner = require('portscanner');
-const bodyParser = require('body-parser');
+import express from 'express';
+import compression from 'compression';
+import color from 'cli-color';
+//import browserSync from 'browser-sync';
+import opn from 'opn';
+import portscanner from 'portscanner';
+import bodyParser from 'body-parser';
 
-const appConfig = require('../../conf.app');
-const routes = require('./routes.js');
-const getBrowser = require('../utils/getBrowser');
+import appConfig from 'ROOT/conf.app';
+import routes from './routes.js';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -20,8 +19,10 @@ const app = {
     this.server = require('http').createServer(this.expressInst);
     // enable gzip (must come before `static` assets)
     this.expressInst.use(compression());
-    // doc root is `public`
-    this.expressInst.use(express.static(appConfig.paths.PUBLIC));
+    // serve static files from `public`
+    this.expressInst.use(express.static(appConfig.paths.PUBLIC, {
+      index: false // ignore the generated index file
+    }));
     // allows for reading POST data
     this.expressInst.use(bodyParser.json());   // to support JSON-encoded bodies
     this.expressInst.use(bodyParser.urlencoded({ // to support URL-encoded bodies
@@ -69,6 +70,8 @@ const app = {
     let msg = `${color.green.bold('[ SERVER ]')} Running at ${color.blue.bold(data.url)}`;
 
     if( isDev ){
+      const getBrowser = require('UTILS/getBrowser');
+
       msg += `\n${color.green.bold('[ WATCHING ]')} For changes`;
 
       opn(data.url, {
@@ -91,16 +94,16 @@ const app = {
       });
 
       if( isDev ){
-        browserSync.init({
-          browser: getBrowser.chrome(),
-          files: [ // watch these files
-            appConfig.paths.PUBLIC
-          ],
-          logLevel: 'silent', // prevent snippet message
-          notify: false, // don't show the BS message in the browser
-          port: appConfig.PORT,
-          url: _self.appURL
-        }, callback);
+        // browserSync.init({
+        //   browser: getBrowser.chrome(),
+        //   files: [ // watch these files
+        //     appConfig.paths.PUBLIC
+        //   ],
+        //   logLevel: 'silent', // prevent snippet message
+        //   notify: false, // don't show the BS message in the browser
+        //   port: appConfig.PORT,
+        //   url: _self.appURL
+        // }, callback);
       }else{
         callback();
       }

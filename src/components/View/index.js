@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Spinner from 'COMPONENTS/Spinner';
-import './styles';
+import styles from './styles';
 
 class View extends Component {
   render() {
@@ -8,6 +8,7 @@ class View extends Component {
       <div
         key="overlay"
         className="overlay"
+        { ...styles }
       >{ this.props.loading && <Spinner label="Loading" /> }</div>,
       <div
         key="view"

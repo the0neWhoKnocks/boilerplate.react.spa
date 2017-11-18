@@ -6,7 +6,8 @@
 # testing
 /coverage
 
-# production
+# generated
+/.server
 /public
 
 # misc

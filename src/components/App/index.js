@@ -2,15 +2,36 @@ import React, { Component } from 'react';
 import Shell from 'COMPONENTS/Shell';
 import View from 'COMPONENTS/View';
 import ViewHOC from 'COMPONENTS/ViewHOC';
+import getData from 'UTILS/getData';
+import './styles';
 
+function getCriticalData(reqOpts){
+  // ensure this only runs on the server
+  if( typeof window !== 'undefined' && window.document ) return [];
+
+  let ret;
+
+  getData(reqOpts)
+  .then(function(resp){
+    ret = resp.data;
+  });
+
+  while( ret === undefined ){
+    require('deasync').runLoopOnce();
+  }
+
+  return ret;
+}
+
+const view1ReqOpts = {
+  url: 'https://baconipsum.com/api/',
+  params: {
+    paras: 1,
+    type: 'all-meat'
+  }
+};
 const View1 = ViewHOC({
-  reqOpts: {
-    url: 'https://baconipsum.com/api/',
-    params: {
-      paras: 1,
-      type: 'all-meat'
-    }
-  },
+  reqOpts: view1ReqOpts,
   View
 });
 const View2 = ViewHOC({
@@ -33,7 +54,8 @@ const data = {
         url: '/',
         view: View1,
         viewProps: {
-          title: 'View 1'
+          title: 'View 1',
+          data: getCriticalData(view1ReqOpts)
         }
       },
       {

@@ -1,4 +1,4 @@
-const assetList = require('../../../public/asset-manifest');
+import assetList from 'PUBLIC/asset-manifest';
 
 function browserSyncScript(dev){
   if( !dev ) return '';
@@ -15,7 +15,7 @@ module.exports = function(model){
     <!DOCTYPE html>
     <html lang="en-US">
       <head>
-        <title>${ model.appData.title }</title>
+        <title>${ model.title }</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,10 +23,16 @@ module.exports = function(model){
 
         <link rel="manifest" href="/manifest.json">
         <link rel="shortcut icon" href="/favicon.ico">
-        <link rel="stylesheet" href="/${ assetList['main.css'] }">
+        <style>${ model.css }</style>
+
+        <script type="text/javascript">
+          window._glam = ${ JSON.stringify(model.glamor.ids) };
+        </script>
       </head>
       <body>
-        <div id="root" class="root"></div>
+        <div id="root" class="root">
+          ${ model.body }
+        </div>
         ${ browserSyncScript(model.dev) }
         <script type="text/javascript" src="/${ assetList['main.js'] }"></script>
       </body>

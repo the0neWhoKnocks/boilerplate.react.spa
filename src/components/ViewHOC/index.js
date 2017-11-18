@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import getData from 'UTILS/getData';
 
 const defaultView = () => (
   <div>
@@ -16,47 +16,28 @@ const ViewHOC = ({
       super(props);
 
       this.state = {
-        loading: true
+        // if the initial data is being hydrated, don't show `loading`
+        loading: !(props.data && props.data.length)
       };
     }
 
     componentDidMount(){
-      this.getData();
-    }
-
-    getData(){
       const self = this;
-      const { body, params, url } = reqOpts;
-      let { method } = reqOpts;
-      let reqData;
 
-      if( url ){
-        const reqArgs = [url];
+      this.setState({
+        loading: true
+      });
 
+      getData(reqOpts)
+      .then(resp => {
         self.setState({
-          loading: true
+          data: resp.data,
+          loading: false
         });
-
-        // Default to GET if nothing was passed
-        if( !method ) method = 'GET';
-        // GETs require a `params` prop
-        if( params ) reqData = { params };
-        // POSTs take whatever Object is passed
-        if( body ) reqData = body;
-        // only add data to the call if it was provided
-        if( reqData ) reqArgs.push(reqData);
-
-        axios[method.toLowerCase()].apply(null, reqArgs)
-        .then(resp => {
-          self.setState({
-            data: resp.data,
-            loading: false
-          });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-      }
+      })
+      .catch(err => {
+        console.error(err);
+      });
     }
 
     render() {
