@@ -2,6 +2,7 @@ const path = require('path');
 const url = require('url');
 
 const ROOT = path.resolve(__dirname);
+const PUBLIC = path.resolve(ROOT, 'public');
 const SRC = path.resolve(ROOT, 'src');
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -35,9 +36,10 @@ module.exports = {
     appPackageJson: path.resolve(ROOT, 'package.json'),
     ASSETS: path.resolve(ROOT, 'src/assets'),
     JEST: path.resolve(ROOT, '.jest'),
-    PUBLIC: path.resolve(ROOT, 'public'),
+    PUBLIC,
     publicUrl: getPublicUrl(path.resolve(ROOT, 'package.json')),
     ROOT,
+    SERVER: path.resolve(ROOT, 'src/server'),
     SRC,
     servedPath: getServedPath(path.resolve(ROOT, 'package.json')),
     yarnLockFile: path.resolve(ROOT, 'yarn.lock'),
@@ -46,8 +48,10 @@ module.exports = {
   webpack: {
     paths: {
       COMPONENTS: path.resolve(ROOT, 'src/components'),
+      PUBLIC,
       ROOT,
       SRC,
+      UTILS: path.resolve(ROOT, 'src/utils'),
     }
   }
 };

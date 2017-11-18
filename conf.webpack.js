@@ -53,10 +53,6 @@ const moduleRules = {
       name: 'static/media/[name].[hash:8].[ext]',
     },
   },
-  styusLoader: {
-    test: /\.styl$/,
-    loader: 'style-loader!css-loader!stylus-loader'
-  },
   urlLoader: {
     test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
     loader: require.resolve('url-loader'),
@@ -134,7 +130,7 @@ const conf = {
     // https://github.com/facebookincubator/create-react-app/issues/290
     // `web` extension prefixes have been added for better support
     // for React Native Web.
-    extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx', '.styl'],
+    extensions: ['.js', '.json'],
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"
     // if there are any conflicts. This matches Node resolution mechanism.
@@ -159,23 +155,9 @@ const conf = {
 // Production build
 if( process.env.NODE_ENV === 'production' ){
   // modules used only for prod build
-  const ExtractTextPlugin = require('extract-text-webpack-plugin');
   const ManifestPlugin = require('webpack-manifest-plugin');
   const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
   const CompressionPlugin = require('compression-webpack-plugin');
-
-  // Some apps do not use client-side routing with pushState.
-  // For these, "homepage" can be set to "." to enable relative asset paths.
-  const shouldUseRelativeAssetPaths = publicPath === './';
-  const cssFilename = 'static/css/[name].[contenthash:8].css';
-  // ExtractTextPlugin expects the build output to be flat.
-  // (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
-  // However, our output is structured with css, js and media folders.
-  // To have this structure working with relative paths, we have to use custom options.
-  const extractTextPluginOptions = shouldUseRelativeAssetPaths
-    ? // Making sure that the publicPath goes back to to build folder.
-      { publicPath: Array(cssFilename.split('/').length).join('../') }
-    : {};
 
   // Don't attempt to continue if there are any errors.
   conf.bail = true;
@@ -195,10 +177,6 @@ if( process.env.NODE_ENV === 'production' ){
     }
   );
   conf.plugins.push(
-    // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
-    new ExtractTextPlugin({
-      filename: cssFilename,
-    }),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -274,41 +252,6 @@ if( process.env.NODE_ENV === 'production' ){
   };
 
   moduleRules.babelLoader.options.compact = true;
-  // The notation here is somewhat confusing.
-  // "postcss" loader applies autoprefixer to our CSS.
-  // "css" loader resolves paths in CSS and adds assets as dependencies.
-  // "style" loader normally turns CSS into JS modules injecting <style>,
-  // but unlike in development configuration, we do something different.
-  // `ExtractTextPlugin` first applies the "postcss" and "css" loaders
-  // (second argument), then grabs the result CSS and puts it into a
-  // separate file in our build process. This way we actually ship
-  // a single CSS file in production instead of JS code injecting <style>
-  // tags. If you use code splitting, however, any async bundles will still
-  // use the "style" loader inside the async code so CSS from them won't be
-  // in the main CSS file.
-  // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
-  moduleRules.styusLoader.loader = ExtractTextPlugin.extract(
-    Object.assign(
-      {
-        fallback: require.resolve('style-loader'),
-        use: [
-          {
-            loader: require.resolve('css-loader'),
-            options: {
-              importLoaders: 1,
-              minimize: true,
-              sourceMap: shouldUseSourceMap,
-            },
-          },
-          {
-            loader: require.resolve('stylus-loader'),
-            options: {},
-          },
-        ],
-      },
-      extractTextPluginOptions
-    )
-  );
 }
 // Dev build
 else{
@@ -398,8 +341,6 @@ conf.module.rules = [
       moduleRules.urlLoader,
       // Process JS with Babel.
       moduleRules.babelLoader,
-      // Process Stylus (CSS) files
-      moduleRules.styusLoader,
       // "file" loader makes sure those assets get served by WebpackDevServer.
       // When you `import` an asset, you get its (virtual) filename.
       // In production, they would get copied to the `build` folder.

@@ -18,7 +18,7 @@ const {
 const openBrowser = require('react-dev-utils/openBrowser');
 const appConfig = require('../conf.app');
 const config = require('../conf.webpack');
-const createDevServerConfig = require('../conf.webpackServer');
+const createDevServerConfig = require('../conf.webpackDevServer');
 
 const useYarn = fs.existsSync(appConfig.paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;

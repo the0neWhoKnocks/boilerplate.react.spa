@@ -16,7 +16,7 @@ Start up an Express server to test things like real-world server conditions or
 server-side rendering.
 
 ```sh
-yarn start:server
+yarn build:server && yarn start:server
 ```
 
 ---
@@ -24,7 +24,7 @@ yarn start:server
 Build a production package
 
 ```sh
-yarn compile
+yarn build:public
 # start up a simple server to verify the built code
 yarn start:static
 ```

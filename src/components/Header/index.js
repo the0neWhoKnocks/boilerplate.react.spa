@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import './styles';
+import styles from './styles';
 
 // The Header creates links that can be used to navigate
 // between routes.
@@ -30,40 +30,7 @@ class Header extends Component {
 
   render() {
     return (
-      <header>
-        <style>{`
-          .toggle {
-            position: absolute;
-            top: 0;
-            right: 0;
-          }
-
-          .toggle label {
-            padding: 1em;
-            user-select: none;
-            cursor: pointer;
-            display: block;
-          }
-
-          .toggle input {
-            display: none;
-          }
-
-          .toggle__indicator {
-            width: 0.25em;
-            height: 50%;
-            background: #666;
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-          }
-          .toggle input:checked + .toggle__indicator {
-            display: block;
-          }
-        `}</style>
-
+      <header { ...styles }>
         <div className="nav__logo">Logo</div>
         <div className="toggle">
           <label>
